@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: staff-of-the-month
+    name: fnkaduna-staff1
     env: node
     region: oregon
     buildCommand: npm install
