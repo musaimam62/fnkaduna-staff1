@@ -1,7 +1,7 @@
 {
-  "name": "fnkaduna-staff-of-the-month",
+  "name": "fnkaduna-staff1",
   "version": "1.0.0",
-  "description": "FNKaduna Staff of the Month - A comprehensive system for departments to nominate and select Staff of the Month",
+  "description": "FNKaduna Staff1 - A comprehensive system for departments to nominate and select Staff of the Month",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
