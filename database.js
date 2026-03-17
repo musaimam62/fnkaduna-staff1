@@ -18,6 +18,7 @@ function initializeDatabase() {
             db.run(`CREATE TABLE IF NOT EXISTS departments (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT UNIQUE NOT NULL,
+                password TEXT DEFAULT '1234',
                 head_name TEXT,
                 description TEXT,
                 mission TEXT,

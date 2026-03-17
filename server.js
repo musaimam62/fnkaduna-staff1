@@ -43,8 +43,9 @@ app.post('/api/auth/login', (req, res) => {
             if (!department) {
                 return res.json({ success: false, message: 'Department not found' });
             }
-            // For department, password is the department name
-            if (password.toLowerCase() === department.name.toLowerCase()) {
+            // For department, password is '1234' by default or custom password
+            const storedPassword = department.password || '1234';
+            if (password === storedPassword) {
                 req.session.user = { id: department.id, name: department.name, type: 'department' };
                 return res.json({ success: true, message: 'Login successful', department });
             }
@@ -186,10 +187,8 @@ app.put('/api/departments/:id/password', (req, res) => {
     if (!req.session.user || (req.session.user.type !== 'superadmin' && req.session.user.type !== 'admin')) {
         return res.status(403).json({ success: false, message: 'Access denied' });
     }
-    // Department passwords are stored in the department name field
-    // For simplicity, we'll add a password field to the departments table
     const { password } = req.body;
-    db.run("UPDATE departments SET name = ? WHERE id = ?", 
+    db.run("UPDATE departments SET password = ? WHERE id = ?", 
         [password, req.params.id],
         function(err) {
             if (err) {

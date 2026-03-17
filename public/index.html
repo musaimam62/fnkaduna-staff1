@@ -377,6 +377,14 @@
                 </div>
 
                 <div id="collectionContent" style="display: none;">
+                    <!-- Department Filter Dropdown (for admin/superadmin) -->
+                    <div id="collectionDeptFilter" style="margin-bottom: 20px; display: none;">
+                        <label><i class="fas fa-filter"></i> Filter by Department:</label>
+                        <select id="collectionDeptSelect" onchange="filterCollectionByDept()" style="padding: 8px; margin-left: 10px; border-radius: 4px; border: 1px solid #ddd;">
+                            <option value="">All Departments</option>
+                        </select>
+                    </div>
+                    
                     <div class="collection-stats">
                         <div class="stat-card">
                             <i class="fas fa-file-alt"></i>
@@ -443,6 +451,14 @@
                 </div>
 
                 <div id="selectionContent" style="display: none;">
+                    <!-- Department Filter Dropdown (for admin/superadmin) -->
+                    <div id="selectionDeptFilter" style="margin-bottom: 20px; display: none;">
+                        <label><i class="fas fa-filter"></i> Filter by Department:</label>
+                        <select id="selectionDeptSelect" onchange="filterSelectionByDept()" style="padding: 8px; margin-left: 10px; border-radius: 4px; border: 1px solid #ddd;">
+                            <option value="">All Departments</option>
+                        </select>
+                    </div>
+                    
                     <div class="ai-section">
                         <div class="card ai-card">
                             <h3><i class="fas fa-robot"></i> AI-Powered Selection</h3>

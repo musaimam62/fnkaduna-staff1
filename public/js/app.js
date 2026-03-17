@@ -684,11 +684,26 @@ document.getElementById('newsForm').addEventListener('submit', (e) => {
 
 // ==================== Collection Page ====================
 function loadCollectionData() {
-    fetch('/api/nominations')
+    // Show/hide department filter based on user type
+    const collectionDeptFilter = document.getElementById('collectionDeptFilter');
+    if (collectionDeptFilter) {
+        if (currentUser && (currentUser.type === 'admin' || currentUser.type === 'superadmin')) {
+            collectionDeptFilter.style.display = 'block';
+            populateCollectionDeptFilter();
+        } else {
+            collectionDeptFilter.style.display = 'none';
+        }
+    }
+    
+    // For department users, show only their department's nominations
+    const deptId = currentUser && currentUser.type === 'department' ? currentUser.id : null;
+    const url = deptId ? `/api/nominations/department/${deptId}` : '/api/nominations';
+    
+    fetch(url)
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                allNominations = data.nominations;
+                allNominations = data.nominations || data;
                 renderCollectionStats();
                 renderNominationsTable();
             }
@@ -699,6 +714,39 @@ function loadCollectionData() {
         .then(data => {
             if (data.success) {
                 allDepartments = data.departments;
+            }
+        });
+}
+
+function populateCollectionDeptFilter() {
+    const select = document.getElementById('collectionDeptSelect');
+    if (!select) return;
+    
+    fetch('/api/departments')
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                select.innerHTML = '<option value="">All Departments</option>';
+                data.departments.forEach(dept => {
+                    select.innerHTML += `<option value="${dept.id}">${dept.name}</option>`;
+                });
+            }
+        });
+}
+
+function filterCollectionByDept() {
+    const select = document.getElementById('collectionDeptSelect');
+    const deptId = select ? select.value : '';
+    
+    const url = deptId ? `/api/nominations/department/${deptId}` : '/api/nominations';
+    
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                allNominations = data.nominations || data;
+                renderCollectionStats();
+                renderNominationsTable();
             }
         });
 }
@@ -783,21 +831,81 @@ function sendReminders() {
 
 // ==================== Selection Page ====================
 function loadSelectionData() {
-    fetch('/api/nominations')
+    // Show/hide department filter based on user type
+    const selectionDeptFilter = document.getElementById('selectionDeptFilter');
+    if (selectionDeptFilter) {
+        if (currentUser && (currentUser.type === 'admin' || currentUser.type === 'superadmin')) {
+            selectionDeptFilter.style.display = 'block';
+            populateSelectionDeptFilter();
+        } else {
+            selectionDeptFilter.style.display = 'none';
+        }
+    }
+    
+    // For department users, show only their department's nominations
+    const deptId = currentUser && currentUser.type === 'department' ? currentUser.id : null;
+    const url = deptId ? `/api/nominations/department/${deptId}` : '/api/nominations';
+    
+    fetch(url)
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                allNominations = data.nominations;
+                allNominations = data.nominations || data;
                 renderSelectionList();
                 populateFinalSelect();
             }
         });
     
-    fetch('/api/staff')
+    // For staff, filter by department if department user
+    const staffUrl = deptId ? `/api/staff/${deptId}` : '/api/staff';
+    fetch(staffUrl)
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                allStaff = data.staff;
+                allStaff = data.staff || data;
+            }
+        });
+}
+
+function populateSelectionDeptFilter() {
+    const select = document.getElementById('selectionDeptSelect');
+    if (!select) return;
+    
+    fetch('/api/departments')
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                select.innerHTML = '<option value="">All Departments</option>';
+                data.departments.forEach(dept => {
+                    select.innerHTML += `<option value="${dept.id}">${dept.name}</option>`;
+                });
+            }
+        });
+}
+
+function filterSelectionByDept() {
+    const select = document.getElementById('selectionDeptSelect');
+    const deptId = select ? select.value : '';
+    
+    const url = deptId ? `/api/nominations/department/${deptId}` : '/api/nominations';
+    
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                allNominations = data.nominations || data;
+                renderSelectionList();
+                populateFinalSelect();
+            }
+        });
+    
+    // Also filter staff
+    const staffUrl = deptId ? `/api/staff/${deptId}` : '/api/staff';
+    fetch(staffUrl)
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                allStaff = data.staff || data;
             }
         });
 }
