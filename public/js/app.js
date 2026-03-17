@@ -376,7 +376,7 @@ function loadDepartmentData() {
         .then(data => {
             if (data.success) {
                 currentDepartment = data.department;
-                document.getElementById('deptName').textContent = currentDepartment.name;
+                document.getElementById('displayDeptName').textContent = currentDepartment.name;
                 
                 // Load staff count
                 fetch(`/api/staff/${currentUser.id}`)
@@ -1055,7 +1055,10 @@ document.getElementById('addDepartmentForm').addEventListener('submit', (e) => {
 
 function deleteDepartment(id) {
     if (confirm('Are you sure you want to delete this department?')) {
-        fetch(`/api/departments/${id}`, { method: 'DELETE' })
+        fetch(`/api/departments/${id}`, { 
+            method: 'DELETE',
+            credentials: 'same-origin'
+        })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -1099,6 +1102,7 @@ document.getElementById('homepageForm').addEventListener('submit', (e) => {
     fetch('/api/homepage/update', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify(data)
     })
     .then(res => res.json())
@@ -1150,6 +1154,7 @@ function updatePassword(deptId) {
     fetch(`/api/departments/${deptId}/password`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({ password: newPass })
     })
     .then(res => res.json())
@@ -1233,6 +1238,7 @@ document.getElementById('memoForm').addEventListener('submit', (e) => {
     fetch('/api/memos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({
             sender_type: 'superadmin',
             sender_id: currentUser.id,
@@ -1274,6 +1280,7 @@ document.getElementById('uploadForm').addEventListener('submit', (e) => {
     fetch('/api/news', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({
             type: document.getElementById('uploadType').value,
             title: document.getElementById('uploadTitle').value,
