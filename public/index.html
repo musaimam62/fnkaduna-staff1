@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff of the Month</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+            <div class="login-type-selector">
+                <button class="login-type-btn active" data-type="department" onclick="selectLoginType('department')">
+                    <i class="fas fa-building"></i> Department
+                </button>
+                <button class="login-type-btn" data-type="admin" onclick="selectLoginType('admin')">
+                    <i class="fas fa-user-shield"></i> Admin
+                </button>
+                <button class="login-type-btn" data-type="superadmin" onclick="selectLoginType('superadmin')">
+                    <i class="fas fa-crown"></i> Super Admin
+                </button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div id="loginHint" class="login-hint"></div>
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            <div id="loginMessage" class="message"></div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-trophy"></i>
+                    <span>Staff of Month</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="home" onclick="showPage('home')">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" data-page="department" onclick="showPage('department')">
+                    <i class="fas fa-building"></i>
+                    <span>Department</span>
+                </a>
+                <a href="#" class="nav-item" data-page="news" onclick="showPage('news')">
+                    <i class="fas fa-newspaper"></i>
+                    <span>News</span>
+                </a>
+                <a href="#" class="nav-item" data-page="collection" onclick="showPage('collection')">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Collection</span>
+                </a>
+                <a href="#" class="nav-item" data-page="selection" onclick="showPage('selection')">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Selection</span>
+                </a>
+                <a href="#" class="nav-item" data-page="superadmin" onclick="showPage('superadmin')">
+                    <i class="fas fa-crown"></i>
+                    <span>Super Admin</span>
+                </a>
+                <a href="#" class="nav-item" id="loginBtn" onclick="openLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <a href="#" class="nav-item" id="logoutBtn" onclick="logout()" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>&copy; 2026 Staff of Month</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Home Page -->
+            <div id="homePage" class="page active">
+                <div class="hero-section">
+                    <div class="hero-content">
+                        <h1><i class="fas fa-trophy"></i> Staff of the Month</h1>
+                        <p class="hero-subtitle">Celebrating Excellence in Our Organization</p>
+                    </div>
+                </div>
+
+                <div class="home-grid">
+                    <div class="home-main">
+                        <!-- Head of Department Section -->
+                        <section class="card hod-section">
+                            <h2><i class="fas fa-user-tie"></i> Head of Department</h2>
+                            <div class="hod-profile">
+                                <div class="hod-photo">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="hod-info">
+                                    <h3 id="hodName">Dr. John Smith</h3>
+                                    <p class="hod-title">Head of Department</p>
+                                    <p id="departmentDescription">Technology and Innovation</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Mission Section -->
+                        <section class="card mission-section">
+                            <h2><i class="fas fa-bullseye"></i> Our Mission</h2>
+                            <p id="missionText">To deliver cutting-edge technological solutions that empower our organization and recognize outstanding achievements.</p>
+                        </section>
+
+                        <!-- What We Do -->
+                        <section class="card">
+                            <h2><i class="fas fa-tasks"></i> What We Do</h2>
+                            <div class="services-grid" id="whatWeDo">
+                                <div class="service-item">
+                                    <i class="fas fa-code"></i>
+                                    <h4>Software Development</h4>
+                                </div>
+                                <div class="service-item">
+                                    <i class="fas fa-server"></i>
+                                    <h4>System Maintenance</h4>
+                                </div>
+                                <div class="service-item">
+                                    <i class="fas fa-headset"></i>
+                                    <h4>IT Support</h4>
+                                </div>
+                                <div class="service-item">
+                                    <i class="fas fa-network-wired"></i>
+                                    <h4>Network Management</h4>
+                                </div>
+                                <div class="service-item">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h4>Cybersecurity</h4>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- What We Will Do -->
+                        <section class="card">
+                            <h2><i class="fas fa-rocket"></i> What We Will Do</h2>
+                            <div class="future-plans" id="whatWeWillDo">
+                                <div class="plan-item">
+                                    <i class="fas fa-brain"></i>
+                                    <h4>AI Integration</h4>
+                                </div>
+                                <div class="plan-item">
+                                    <i class="fas fa-cloud"></i>
+                                    <h4>Cloud Migration</h4>
+                                </div>
+                                <div class="plan-item">
+                                    <i class="fas fa-digital-tachograph"></i>
+                                    <h4>Digital Transformation</h4>
+                                </div>
+                                <div class="plan-item">
+                                    <i class="fas fa-wifi"></i>
+                                    <h4>IoT Implementation</h4>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="home-sidebar">
+                        <!-- Events Section -->
+                        <section class="card events-section">
+                            <h2><i class="fas fa-calendar-alt"></i> Upcoming Events</h2>
+                            <div id="eventsList" class="events-list">
+                                <!-- Events will be loaded here -->
+                            </div>
+                        </section>
+
+                        <!-- Staff of Month Preview -->
+                        <section class="card">
+                            <h2><i class="fas fa-star"></i> Staff of the Month</h2>
+                            <div id="staffOfMonthPreview" class="som-preview">
+                                <!-- Will be loaded here -->
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Department Page -->
+            <div id="departmentPage" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-building"></i> Department Portal</h1>
+                    <p>Manage your department, staff, and nominations</p>
+                </div>
+
+                <div id="departmentLoginRequired" class="login-required">
+                    <i class="fas fa-lock"></i>
+                    <h3>Login Required</h3>
+                    <p>Please login to access the department portal</p>
+                    <button class="btn btn-primary" onclick="openLoginModal(); selectLoginType('department')">
+                        <i class="fas fa-sign-in-alt"></i> Login as Department
+                    </button>
+                </div>
+
+                <div id="departmentContent" style="display: none;">
+                    <div class="dashboard-cards">
+                        <div class="dash-card">
+                            <i class="fas fa-users"></i>
+                            <div class="dash-info">
+                                <h3 id="deptName">Department</h3>
+                                <p>Staff Count: <span id="staffCount">0</span></p>
+                            </div>
+                        </div>
+                        <div class="dash-card">
+                            <i class="fas fa-file-alt"></i>
+                            <div class="dash-info">
+                                <h3>Nominations</h3>
+                                <p>Submitted: <span id="nominationCount">0</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="staff" onclick="showDepartmentTab('staff')">
+                            <i class="fas fa-users"></i> Staff Management
+                        </button>
+                        <button class="tab-btn" data-tab="nominate" onclick="showDepartmentTab('nominate')">
+                            <i class="fas fa-star"></i> Nominate Staff
+                        </button>
+                    </div>
+
+                    <!-- Staff Management Tab -->
+                    <div id="staffTab" class="tab-content active">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-users"></i> Staff List</h3>
+                                <button class="btn btn-primary" onclick="showAddStaffModal()">
+                                    <i class="fas fa-plus"></i> Add Staff
+                                </button>
+                            </div>
+                            <div id="staffList" class="staff-grid">
+                                <!-- Staff will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nominate Tab -->
+                    <div id="nominateTab" class="tab-content">
+                        <div class="card">
+                            <h3><i class="fas fa-star"></i> Nominate Staff of the Month</h3>
+                            <form id="nominationForm">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user"></i> Select Staff Member</label>
+                                    <select id="nomineeSelect" required>
+                                        <option value="">Choose a staff member...</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reason 1: Why should this staff be Staff of the Month?</label>
+                                    <textarea id="reason1" rows="2" placeholder="Enter detailed reason..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reason 2:</label>
+                                    <textarea id="reason2" rows="2" placeholder="Enter detailed reason..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reason 3:</label>
+                                    <textarea id="reason3" rows="2" placeholder="Enter detailed reason..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reason 4:</label>
+                                    <textarea id="reason4" rows="2" placeholder="Enter detailed reason..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reason 5:</label>
+                                    <textarea id="reason5" rows="2" placeholder="Enter detailed reason..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fas fa-comment"></i> Head of Department Recommendation</label>
+                                    <textarea id="hodReason" rows="4" placeholder="Provide your recommendation as the Head of Department..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Submit Nomination
+                                </button>
+                            </form>
+                            <div id="nominationMessage" class="message"></div>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-history"></i> My Nominations</h3>
+                            <div id="myNominations">
+                                <!-- Previous nominations will be shown here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News Page -->
+            <div id="newsPage" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-newspaper"></i> News & Updates</h1>
+                    <p>Stay informed about what's happening in our organization</p>
+                </div>
+
+                <div class="news-filters">
+                    <button class="filter-btn active" data-filter="all" onclick="filterNews('all')">All</button>
+                    <button class="filter-btn" data-filter="staff_month" onclick="filterNews('staff_month')">Staff of Month</button>
+                    <button class="filter-btn" data-filter="event" onclick="filterNews('event')">Events</button>
+                    <button class="filter-btn" data-filter="general" onclick="filterNews('general')">General</button>
+                </div>
+
+                <div id="newsGrid" class="news-grid">
+                    <!-- News will be loaded here -->
+                </div>
+
+                <!-- News Admin Panel (visible to admins) -->
+                <div id="newsAdminPanel" class="card" style="display: none;">
+                    <h3><i class="fas fa-plus-circle"></i> Add News</h3>
+                    <form id="newsForm">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="newsTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Content</label>
+                            <textarea id="newsContent" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select id="newsType" required>
+                                <option value="general">General</option>
+                                <option value="staff_month">Staff of Month</option>
+                                <option value="event">Event</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Author</label>
+                            <input type="text" id="newsAuthor" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Event Date (optional)</label>
+                            <input type="date" id="newsEventDate">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save News
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Collection Page -->
+            <div id="collectionPage" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-folder-open"></i> Collection Menu</h1>
+                    <p>View and manage all submitted nominations</p>
+                </div>
+
+                <div id="collectionLoginRequired" class="login-required">
+                    <i class="fas fa-lock"></i>
+                    <h3>Admin Access Required</h3>
+                    <p>Please login as Admin to access this section</p>
+                    <button class="btn btn-primary" onclick="openLoginModal(); selectLoginType('admin')">
+                        <i class="fas fa-sign-in-alt"></i> Login as Admin
+                    </button>
+                </div>
+
+                <div id="collectionContent" style="display: none;">
+                    <div class="collection-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-file-alt"></i>
+                            <h3 id="totalNominations">0</h3>
+                            <p>Total Nominations</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-check-circle"></i>
+                            <h3 id="submittedNominations">0</h3>
+                            <p>Submitted</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-clock"></i>
+                            <h3 id="pendingNominations">0</h3>
+                            <p>Pending</p>
+                        </div>
+                    </div>
+
+                    <div class="collection-actions">
+                        <button class="btn btn-primary" onclick="sendNotifications()">
+                            <i class="fas fa-paper-plane"></i> Send Notifications
+                        </button>
+                        <button class="btn btn-warning" onclick="sendReminders()">
+                            <i class="fas fa-bell"></i> Send Reminders
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-list"></i> All Nominations</h3>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Staff Name</th>
+                                        <th>Department</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="nominationsTable">
+                                    <!-- Nominations will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selection Page -->
+            <div id="selectionPage" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-check-circle"></i> Selection Panel</h1>
+                    <p>Review and select the best Staff of the Month</p>
+                </div>
+
+                <div id="selectionLoginRequired" class="login-required">
+                    <i class="fas fa-lock"></i>
+                    <h3>Super Admin Access Required</h3>
+                    <p>Please login as Super Admin to access this section</p>
+                    <button class="btn btn-primary" onclick="openLoginModal(); selectLoginType('superadmin')">
+                        <i class="fas fa-sign-in-alt"></i> Login as Super Admin
+                    </button>
+                </div>
+
+                <div id="selectionContent" style="display: none;">
+                    <div class="ai-section">
+                        <div class="card ai-card">
+                            <h3><i class="fas fa-robot"></i> AI-Powered Selection</h3>
+                            <p>Our AI system analyzes all nominations and provides a recommendation based on:</p>
+                            <ul>
+                                <li>Quality and detail of reasons provided</li>
+                                <li>Positive keywords and achievements mentioned</li>
+                                <li>Head of Department's endorsement strength</li>
+                            </ul>
+                            <button class="btn btn-accent" onclick="runAISelection()">
+                                <i class="fas fa-magic"></i> Run AI Selection
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="aiResult" class="card" style="display: none;">
+                        <h3><i class="fas fa-trophy"></i> AI Recommendation</h3>
+                        <div id="aiRecommendation">
+                            <!-- AI result will be shown here -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-list"></i> All Submitted Nominations</h3>
+                        <div class="selection-grid" id="selectionList">
+                            <!-- Nominations will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-paper-plane"></i> Final Selection</h3>
+                        <form id="finalSelectionForm">
+                            <div class="form-group">
+                                <label>Select Staff of the Month</label>
+                                <select id="finalSelect" required>
+                                    <option value="">Choose the selected staff...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Month</label>
+                                <select id="selectMonth" required>
+                                    <option value="January">January</option>
+                                    <option value="February">February</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Year</label>
+                                <input type="number" id="selectYear" value="2026" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Comment</label>
+                                <textarea id="selectComment" rows="3" placeholder="Add a comment about this selection..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check"></i> Confirm Selection
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Super Admin Page -->
+            <div id="superadminPage" class="page">
+                <div class="page-header">
+                    <h1><i class="fas fa-crown"></i> Super Admin Dashboard</h1>
+                    <p>Full system control and management</p>
+                </div>
+
+                <div id="superadminLoginRequired" class="login-required">
+                    <i class="fas fa-lock"></i>
+                    <h3>Super Admin Access Required</h3>
+                    <p>Please login as Super Admin to access this section</p>
+                    <button class="btn btn-primary" onclick="openLoginModal(); selectLoginType('superadmin')">
+                        <i class="fas fa-sign-in-alt"></i> Login as Super Admin
+                    </button>
+                </div>
+
+                <div id="superadminContent" style="display: none;">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="homepage" onclick="showSuperAdminTab('homepage')">
+                            <i class="fas fa-home"></i> Home Page
+                        </button>
+                        <button class="tab-btn" data-tab="departments" onclick="showSuperAdminTab('departments')">
+                            <i class="fas fa-building"></i> Departments
+                        </button>
+                        <button class="tab-btn" data-tab="passwords" onclick="showSuperAdminTab('passwords')">
+                            <i class="fas fa-key"></i> Passwords
+                        </button>
+                        <button class="tab-btn" data-tab="upload" onclick="showSuperAdminTab('upload')">
+                            <i class="fas fa-upload"></i> Upload
+                        </button>
+                        <button class="tab-btn" data-tab="memos" onclick="showSuperAdminTab('memos')">
+                            <i class="fas fa-envelope"></i> Memos
+                        </button>
+                        <button class="tab-btn" data-tab="stats" onclick="showSuperAdminTab('stats')">
+                            <i class="fas fa-chart-bar"></i> Statistics
+                        </button>
+                        <button class="tab-btn" data-tab="allstaff" onclick="showSuperAdminTab('allstaff')">
+                            <i class="fas fa-users"></i> All Staff
+                        </button>
+                    </div>
+
+                    <!-- Home Page Tab -->
+                    <div id="homepageTab" class="tab-content active">
+                        <div class="card">
+                            <h3><i class="fas fa-home"></i> Home Page Content Management</h3>
+                            <p>Update the content displayed on the home page</p>
+                            <form id="homepageForm">
+                                <div class="form-group">
+                                    <label>Head of Department Name</label>
+                                    <input type="text" id="homeHodName" placeholder="Enter Head of Department name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Department Description</label>
+                                    <textarea id="homeDescription" rows="2" placeholder="Enter department description"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mission Statement</label>
+                                    <textarea id="homeMission" rows="3" placeholder="Enter mission statement"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>What We Do (comma separated)</label>
+                                    <input type="text" id="homeWhatWeDo" placeholder="e.g., Software Development, IT Support, Network Management">
+                                </div>
+                                <div class="form-group">
+                                    <label>What We Will Do (comma separated)</label>
+                                    <input type="text" id="homeWhatWeWillDo" placeholder="e.g., AI Integration, Cloud Migration">
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Update Home Page
+                                </button>
+                            </form>
+                            <div id="homepageMessage" class="message"></div>
+                        </div>
+                    </div>
+
+                    <!-- Departments Tab -->
+                    <div id="departmentsTab" class="tab-content">
+                        <div class="card" style="margin-bottom: 20px;">
+                            <button class="btn btn-primary" onclick="showAddDepartmentModal()" style="margin-bottom: 16px;">
+                                <i class="fas fa-plus"></i> Add New Department
+                            </button>
+                            <div class="card-header">
+                                <h3><i class="fas fa-building"></i> Department List</h3>
+                                <button class="btn btn-primary" onclick="showAddDepartmentModal()">
+                                    <i class="fas fa-plus"></i> Add Department
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Head</th>
+                                            <th>Description</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="departmentsTable">
+                                        <!-- Departments will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Passwords Tab -->
+                    <div id="passwordsTab" class="tab-content">
+                        <div class="card">
+                            <h3><i class="fas fa-key"></i> Department Password Management</h3>
+                            <p>Change department login passwords</p>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Department</th>
+                                            <th>New Password</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="passwordsTable">
+                                        <!-- Passwords will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upload Tab -->
+                    <div id="uploadTab" class="tab-content">
+                        <div class="card">
+                            <h3><i class="fas fa-image"></i> Upload Images & Events</h3>
+                            <form id="uploadForm">
+                                <div class="form-group">
+                                    <label>Upload Type</label>
+                                    <select id="uploadType">
+                                        <option value="event">Event</option>
+                                        <option value="gallery">Image Gallery</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" id="uploadTitle" placeholder="Enter title">
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea id="uploadDesc" rows="3" placeholder="Enter description"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Image URL</label>
+                                    <input type="text" id="uploadImageData" placeholder="Enter image URL">
+                                </div>
+                                <div class="form-group">
+                                    <label>Event Date (for events)</label>
+                                    <input type="date" id="uploadEventDate">
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-upload"></i> Upload
+                                </button>
+                            </form>
+                            <div id="uploadMessage" class="message"></div>
+                        </div>
+                    </div>
+
+                    <!-- Memos Tab -->
+                    <div id="memosTab" class="tab-content">
+                        <div class="card">
+                            <h3><i class="fas fa-paper-plane"></i> Send Memo</h3>
+                            <form id="memoForm">
+                                <div class="form-group">
+                                    <label>To</label>
+                                    <select id="memoReceiver" required>
+                                        <option value="all">All Departments</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Subject</label>
+                                    <input type="text" id="memoSubject" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Message</label>
+                                    <textarea id="memoContent" rows="4" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Send Memo
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="card">
+                            <h3><i class="fas fa-inbox"></i> Received Memos</h3>
+                            <div id="memosList">
+                                <!-- Memos will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Tab -->
+                    <div id="statsTab" class="tab-content">
+                        <div class="card" style="margin-bottom: 20px;">
+                            <div class="card-header">
+                                <h3><i class="fas fa-chart-bar"></i> System Statistics</h3>
+                                <button class="btn btn-primary" onclick="window.print()">
+                                    <i class="fas fa-print"></i> Print Report
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-card large">
+                                <i class="fas fa-building"></i>
+                                <h3 id="statDepartments">0</h3>
+                                <p>Departments</p>
+                            </div>
+                            <div class="stat-card large">
+                                <i class="fas fa-users"></i>
+                                <h3 id="statStaff">0</h3>
+                                <p>Staff Members</p>
+                            </div>
+                            <div class="stat-card large">
+                                <i class="fas fa-file-alt"></i>
+                                <h3 id="statNominations">0</h3>
+                                <p>Nominations</p>
+                            </div>
+                            <div class="stat-card large">
+                                <i class="fas fa-newspaper"></i>
+                                <h3 id="statNews">0</h3>
+                                <p>News Articles</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- All Staff Tab -->
+                    <div id="allstaffTab" class="tab-content">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-users"></i> All Staff by Department</h3>
+                                <button class="btn btn-primary" onclick="window.print()">
+                                    <i class="fas fa-print"></i> Print Staff List
+                                </button>
+                            </div>
+                            <div id="allStaffGrid" class="all-staff-grid">
+                                <!-- All staff will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Staff Modal -->
+    <div id="addStaffModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddStaffModal()">&times;</span>
+            <h2><i class="fas fa-user-plus"></i> Add Staff Member</h2>
+            <form id="addStaffForm">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="staffName" required>
+                </div>
+                <div class="form-group">
+                    <label>Position</label>
+                    <input type="text" id="staffPosition" required>
+                </div>
+                <div class="form-group">
+                    <label>Bio</label>
+                    <textarea id="staffBio" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Staff
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Department Modal -->
+    <div id="addDepartmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddDepartmentModal()">&times;</span>
+            <h2><i class="fas fa-building"></i> Add Department</h2>
+            <div style="margin-bottom: 20px;">
+                <button type="button" class="btn btn-primary" onclick="document.getElementById('addDepartmentForm').dispatchEvent(new Event('submit'))">
+                    <i class="fas fa-save"></i> Save
+                </button>
+            </div>
+            <form id="addDepartmentForm">
+                <div class="form-group">
+                    <label>Department Name</label>
+                    <input type="text" id="deptName" required placeholder="Enter department name">
+                </div>
+                <div class="form-group">
+                    <label>Head of Department</label>
+                    <input type="text" id="deptHead" required placeholder="Enter head name">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="deptDescription" rows="2" placeholder="Enter description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Mission</label>
+                    <textarea id="deptMission" rows="3" placeholder="Enter mission statement"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>What We Do (comma separated)</label>
+                    <textarea id="deptWhatWeDo" rows="2" placeholder="e.g., Budgeting, Financial reporting, Payroll"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>What We Will Do (comma separated)</label>
+                    <textarea id="deptWhatWeWillDo" rows="2" placeholder="e.g., Financial automation, Risk management"></textarea>
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="closeAddDepartmentModal()" style="flex: 1;">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Staff Detail Modal -->
+    <div id="staffDetailModal" class="modal">
+        <div class="modal-content large">
+            <span class="close" onclick="closeStaffDetailModal()">&times;</span>
+            <div id="staffDetailContent">
+                <!-- Staff details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Detail Modal -->
+    <div id="serviceDetailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeServiceDetailModal()">&times;</span>
+            <div id="serviceDetailContent">
+                <!-- Service details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
