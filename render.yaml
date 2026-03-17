@@ -3,7 +3,7 @@ services:
     name: fnkaduna-staff1
     env: node
     region: oregon
-    buildCommand: npm install
+    buildCommand: npm install && npm rebuild sqlite3
     startCommand: npm start
     envVars:
       - key: NODE_ENV
