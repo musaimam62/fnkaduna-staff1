@@ -129,7 +129,9 @@ function initializeDatabase() {
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
                 role TEXT DEFAULT 'admin',
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                department_id INTEGER,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (department_id) REFERENCES departments(id)
             )`, (err) => {
                 if (err) reject(err);
             });
@@ -162,32 +164,38 @@ function initializeDatabase() {
             });
 
             // Insert sample departments
-            db.run(`INSERT OR IGNORE INTO departments (name, head_name, description, mission, what_we_do, what_we_will_do) VALUES 
-                (?, ?, ?, ?, ?, ?)`,
-                ['IT Department', 'John Smith', 'Technology and Innovation', 
+            db.run(`INSERT OR IGNORE INTO departments (name, password, head_name, description, mission, what_we_do, what_we_will_do) VALUES 
+                (?, ?, ?, ?, ?, ?, ?)`,
+                ['IT Department', '1234', 'John Smith', 'Technology and Innovation', 
                  'To deliver cutting-edge technological solutions that empower our organization.',
                  'Software development, System maintenance, IT support, Network management, Cybersecurity',
                  'AI integration, Cloud migration, Digital transformation, IoT implementation'],
                 (err) => { if (err) console.log('Department insert error:', err); }
             );
 
-            db.run(`INSERT OR IGNORE INTO departments (name, head_name, description, mission, what_we_do, what_we_will_do) VALUES 
-                (?, ?, ?, ?, ?, ?)`,
-                ['HR Department', 'Sarah Johnson', 'Human Resources Management',
+            db.run(`INSERT OR IGNORE INTO departments (name, password, head_name, description, mission, what_we_do, what_we_will_do) VALUES 
+                (?, ?, ?, ?, ?, ?, ?)`,
+                ['HR Department', '1234', 'Sarah Johnson', 'Human Resources Management',
                  'To foster a positive workplace culture and develop our most valuable asset - our people.',
                  'Recruitment, Training, Employee relations, Performance management, Benefits administration',
                  'Remote work policies, Diversity initiatives, Employee wellness programs, Career development'],
                 (err) => { if (err) console.log('Department insert error:', err); }
             );
 
-            db.run(`INSERT OR IGNORE INTO departments (name, head_name, description, mission, what_we_do, what_we_will_do) VALUES 
-                (?, ?, ?, ?, ?, ?)`,
-                ['Finance Department', 'Michael Brown', 'Financial Planning and Analysis',
+            db.run(`INSERT OR IGNORE INTO departments (name, password, head_name, description, mission, what_we_do, what_we_will_do) VALUES 
+                (?, ?, ?, ?, ?, ?, ?)`,
+                ['Finance Department', '1234', 'Michael Brown', 'Financial Planning and Analysis',
                  'To ensure financial sustainability and growth through strategic planning and management.',
                  'Budgeting, Financial reporting, Payroll, Auditing, Investment management',
                  'Financial automation, Risk management, Blockchain adoption, ESG reporting'],
                 (err) => { if (err) console.log('Department insert error:', err); }
             );
+            
+            // Add department admin users
+            db.run(`INSERT OR IGNORE INTO admins (username, password, role, department_id) VALUES (?, ?, ?, ?)`, 
+                ['musa', 'imam', 'department', 1], (err) => {
+                if (err) console.log('Admin insert error:', err);
+            });
 
             // Insert service details for Finance Department
             const financeServices = [

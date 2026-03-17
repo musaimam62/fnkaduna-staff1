@@ -35,21 +35,44 @@ app.post('/api/auth/login', (req, res) => {
     const { username, password, loginType } = req.body;
     
     if (loginType === 'department') {
-        // Department login - check departments table
-        db.get("SELECT * FROM departments WHERE LOWER(name) = ?", [username.toLowerCase()], (err, department) => {
+        // First check if it's a department admin user in admins table
+        db.get("SELECT * FROM admins WHERE LOWER(username) = ? AND role = 'department'", [username.toLowerCase()], (err, admin) => {
             if (err) {
                 return res.status(500).json({ success: false, message: 'Server error' });
             }
-            if (!department) {
-                return res.json({ success: false, message: 'Department not found' });
+            if (admin) {
+                // Department admin user - check password with bcrypt
+                const validPassword = bcrypt.compareSync(password, admin.password);
+                if (validPassword) {
+                    // Get the department info
+                    db.get("SELECT * FROM departments WHERE id = ?", [admin.department_id], (err, department) => {
+                        if (department) {
+                            req.session.user = { id: department.id, name: department.name, type: 'department' };
+                            return res.json({ success: true, message: 'Login successful', department });
+                        }
+                        return res.json({ success: false, message: 'Department not found' });
+                    });
+                    return;
+                }
+                return res.json({ success: false, message: 'Invalid password' });
             }
-            // For department, password is '1234' by default or custom password
-            const storedPassword = department.password || '1234';
-            if (password === storedPassword) {
-                req.session.user = { id: department.id, name: department.name, type: 'department' };
-                return res.json({ success: true, message: 'Login successful', department });
-            }
-            return res.json({ success: false, message: 'Invalid password' });
+            
+            // If not a department admin, check departments table
+            db.get("SELECT * FROM departments WHERE LOWER(name) = ?", [username.toLowerCase()], (err, department) => {
+                if (err) {
+                    return res.status(500).json({ success: false, message: 'Server error' });
+                }
+                if (!department) {
+                    return res.json({ success: false, message: 'Department not found' });
+                }
+                // For department, password is '1234' by default or custom password
+                const storedPassword = department.password || '1234';
+                if (password === storedPassword) {
+                    req.session.user = { id: department.id, name: department.name, type: 'department' };
+                    return res.json({ success: true, message: 'Login successful', department });
+                }
+                return res.json({ success: false, message: 'Invalid password' });
+            });
         });
     } else if (loginType === 'admin' || loginType === 'superadmin') {
         // Admin/Super admin login - check admins table
